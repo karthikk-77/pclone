@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Clone Repo') {
             steps {
-                git 'https://github.com/karthikk-77/pclone'
+                git branch: 'main', url: 'https://github.com/karthikk-77/pclone'
             }
         }
         stage('Build Docker Image') {
