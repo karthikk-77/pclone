@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_HUB_CREDENTIALS = credentials('dockerhub')
+        DOCKER_HUB_CREDENTIALS = credentials('dockerhub')  // Reference the correct credentials
     }
     stages {
         stage('Build Docker Image') {
@@ -11,11 +11,10 @@ pipeline {
         }
         stage('Push to Docker Hub') {
             steps {
-                withDockerRegistry([ credentialsId: "${DOCKER_HUB_CREDENTIALS}", url: "" ]) {
+                withDockerRegistry([ credentialsId: 'dockerhub', url: 'https://index.docker.io/v1/' ]) {
                     sh 'docker push karthik792/pinterest-clone:latest'
                 }
             }
         }
     }
 }
-
