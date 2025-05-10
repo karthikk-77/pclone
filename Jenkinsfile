@@ -1,16 +1,12 @@
 pipeline {
     agent any
     environment {
-        DOCKER_HUB_CREDENTIALS = credentials('dockerhub')  // Docker Hub credentials
+        DOCKER_HUB_CREDENTIALS = 'dockerhub'
     }
     stages {
         stage('Checkout') {
             steps {
-                script {
-                    sh 'git --version'  // Check if git is available
-                    sh 'git config --list'  // Check if git configuration is set
-                    checkout scm  // Checkout from the configured repository
-                }
+                git credentialsId: 'github-creds', url: 'https://github.com/karthikk-77/pclone.git', branch: 'main'
             }
         }
         stage('Build Docker Image') {
@@ -20,7 +16,7 @@ pipeline {
         }
         stage('Push to Docker Hub') {
             steps {
-                withDockerRegistry([ credentialsId: 'dockerhub', url: 'https://index.docker.io/v1/' ]) {
+                withDockerRegistry([credentialsId: "${DOCKER_HUB_CREDENTIALS}", url: ""]) {
                     sh 'docker push karthik792/pinterest-clone:latest'
                 }
             }
